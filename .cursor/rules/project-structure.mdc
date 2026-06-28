@@ -1,0 +1,23 @@
+---
+alwaysApply: true
+description: Folder structure for react project
+---
+
+Always use the following project structure:
+
+```text
+remotes/**/src/    
+├── components/
+├── hooks/
+├── styles/
+├── assets/
+└── App.jsx
+```
+
+Rules:
+- Reusable UI components → `components/`
+- Custom React hooks → `hooks/`
+- CSS/SCSS files → `styles/`
+- Images, SVGs, fonts, and other static files → `assets/`
+- Update `App.jsx` when integrating new components, routes, layouts, or providers.
+- Do not create additional folders unless explicitly required.

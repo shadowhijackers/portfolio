@@ -1,0 +1,324 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #e8edf4;
+  --bg-elevated: #e8edf4;
+  --surface: #e8edf4;
+  --surface-solid: #e8edf4;
+  --text: #4a5568;
+  --muted: #7b8798;
+  --accent: #6b7fd7;
+  --accent-2: #9b8fd9;
+  --accent-soft: rgba(107, 127, 215, 0.15);
+  --success: #5cb87a;
+
+  --neu-light: #ffffff;
+  --neu-dark: #c5d0e0;
+  --neu-raised: 9px 9px 18px var(--neu-dark), -9px -9px 18px var(--neu-light);
+  --neu-raised-sm: 5px 5px 10px var(--neu-dark), -5px -5px 10px var(--neu-light);
+  --neu-raised-lg: 12px 12px 24px var(--neu-dark), -12px -12px 24px var(--neu-light);
+  --neu-pressed: inset 6px 6px 12px var(--neu-dark), inset -6px -6px 12px var(--neu-light);
+  --neu-pressed-sm: inset 4px 4px 8px var(--neu-dark), inset -4px -4px 8px var(--neu-light);
+
+  --neon-cyan: var(--accent);
+  --neon-magenta: #c77da0;
+  --neon-violet: var(--accent-2);
+  --plasma-pink: #d4a5c4;
+  --plasma-orange: #e8b86d;
+  --border: transparent;
+  --border-magenta: transparent;
+  --glow-cyan: var(--neu-raised-sm);
+  --glow-magenta: var(--neu-raised-sm);
+  --plasma-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+
+  --font-sans: 'Nunito', system-ui, sans-serif;
+  --font-display: 'DM Sans', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', monospace;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --header-height: 4.75rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.neu-shell {
+  position: relative;
+  min-height: 100vh;
+  padding-top: var(--header-height);
+  background: var(--bg);
+  overflow-x: clip;
+}
+
+.header-slot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+  overflow: visible;
+}
+
+section[id] {
+  scroll-margin-top: var(--header-height);
+}
+
+@media (max-width: 840px) {
+  :root {
+    --header-height: 4.5rem;
+  }
+}
+
+/* Animated neumorphic background */
+.neu-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 20%, rgba(107, 127, 215, 0.14), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 88% 12%, rgba(155, 143, 217, 0.12), transparent 50%),
+    radial-gradient(ellipse 55% 45% at 72% 88%, rgba(199, 125, 160, 0.08), transparent 52%),
+    var(--bg);
+  animation: neu-bg-shift 20s ease-in-out infinite alternate;
+}
+
+.neu-bg::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.28) 60deg,
+    transparent 120deg,
+    rgba(107, 127, 215, 0.05) 200deg,
+    transparent 280deg
+  );
+  animation: neu-shine-spin 28s linear infinite;
+}
+
+/* Animated spider-web canvas (WebTextureCanvas.jsx) */
+.neu-web-texture,
+.neu-spider-web {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0.82;
+  mix-blend-mode: soft-light;
+}
+
+@keyframes neu-bg-shift {
+  0% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  100% {
+    filter: hue-rotate(8deg) brightness(1.03);
+  }
+}
+
+@keyframes neu-shine-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.neu-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.neu-blob-1 {
+  width: 340px;
+  height: 340px;
+  top: 8%;
+  left: -6%;
+  background: rgba(107, 127, 215, 0.22);
+  animation: neu-blob-float-1 18s ease-in-out infinite;
+}
+
+.neu-blob-2 {
+  width: 280px;
+  height: 280px;
+  top: 42%;
+  right: -8%;
+  background: rgba(155, 143, 217, 0.2);
+  animation: neu-blob-float-2 22s ease-in-out infinite;
+}
+
+.neu-blob-3 {
+  width: 220px;
+  height: 220px;
+  bottom: 12%;
+  left: 38%;
+  background: rgba(199, 125, 160, 0.14);
+  animation: neu-blob-float-3 16s ease-in-out infinite;
+}
+
+.neu-blob-4 {
+  width: 180px;
+  height: 180px;
+  top: 22%;
+  right: 28%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: neu-blob-float-4 14s ease-in-out infinite;
+}
+
+@keyframes neu-blob-float-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(40px, -30px) scale(1.08);
+  }
+}
+
+@keyframes neu-blob-float-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-36px, 28px) scale(1.06);
+  }
+}
+
+@keyframes neu-blob-float-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(24px, 20px) scale(0.94);
+  }
+}
+
+@keyframes neu-blob-float-4 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-20px, -24px) scale(1.1);
+  }
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.mfe-error {
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: #b4535a;
+  font-size: 0.9rem;
+  box-shadow: var(--neu-pressed);
+}
+
+.mfe-error code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+.mfe-loading {
+  padding: 3rem;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.anim-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 0.08s);
+}
+
+.is-visible .anim-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .neu-bg,
+  .neu-bg::after,
+  .neu-blob {
+    animation: none !important;
+  }
+
+  .anim-item {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.65rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: var(--bg);
+  box-shadow: var(--neu-pressed-sm);
+}

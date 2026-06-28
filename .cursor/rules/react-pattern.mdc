@@ -1,0 +1,10 @@
+---
+globs: remotes/**/*.jsx
+alwaysApply: true
+---
+
+- Use named exports, not default exports
+- Co-locate styles in a module CSS file next to the component
+- Keep components under 200 lines. Extract subcomponents into the same directory when a file grows beyond that
+- Prefer composition over prop drilling. Pass children or render props instead of threading data through multiple layers
+- Apply SOLID principles

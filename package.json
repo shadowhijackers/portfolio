@@ -1,0 +1,18 @@
+{
+  "name": "portfolio-micro-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Individual portfolio website built with React micro frontends (Module Federation)",
+  "workspaces": [
+    "shell",
+    "remotes/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n shell,header,about,experience,projects,contact -c blue,green,yellow,red,magenta,cyan \"npm run dev -w shell\" \"npm run dev -w @portfolio/header\" \"npm run dev -w @portfolio/about\" \"npm run dev -w @portfolio/experience\" \"npm run dev -w @portfolio/projects\" \"npm run dev -w @portfolio/contact\"",
+    "build": "npm run build -w @portfolio/header && npm run build -w @portfolio/about && npm run build -w @portfolio/experience && npm run build -w @portfolio/projects && npm run build -w @portfolio/contact && npm run build -w shell",
+    "preview": "npm run preview -w shell"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
