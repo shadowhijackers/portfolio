@@ -1,61 +1,158 @@
 import { useEffect, useRef } from 'react';
 
-/** Spider-web hubs: x/y as 0–1 viewport, radius as fraction of min(w,h) */
-const WEBS = [
-  { x: 0.5, y: 0.42, radius: 0.58, spokes: 18, rings: 14, rotSpeed: 0.035, phase: 0 },
-  { x: 0.14, y: 0.18, radius: 0.3, spokes: 14, rings: 9, rotSpeed: -0.028, phase: 1.2 },
-  { x: 0.86, y: 0.22, radius: 0.34, spokes: 15, rings: 10, rotSpeed: 0.032, phase: 2.4 },
-  { x: 0.18, y: 0.82, radius: 0.32, spokes: 13, rings: 9, rotSpeed: -0.025, phase: 3.6 },
-  { x: 0.84, y: 0.76, radius: 0.36, spokes: 14, rings: 10, rotSpeed: 0.03, phase: 4.8 },
-];
+const STREAM_COUNT = 42;
+const NODE_COUNT = 36;
 
-function drawSpiderWeb(ctx, cx, cy, maxR, spokes, rings, rotation, time, phase) {
-  const pulse = 1 + Math.sin(time * 1.2 + phase) * 0.03;
+const streamSeeds = Array.from({ length: STREAM_COUNT }, (_, index) => ({
+  x: ((index * 73.17) % 100) / 100,
+  y: ((index * 41.29 + 17) % 100) / 100,
+  phase: index * 1.37,
+  length: 0.45 + (index % 5) * 0.08,
+  curl: 0.6 + (index % 4) * 0.25,
+}));
 
-  ctx.lineWidth = 0.75;
-  ctx.strokeStyle = 'rgba(107, 127, 215, 0.14)';
+const nodeSeeds = Array.from({ length: NODE_COUNT }, (_, index) => ({
+  x: ((index * 59.11) % 100) / 100,
+  y: ((index * 83.07 + 9) % 100) / 100,
+  phase: index * 0.93,
+  size: 1.1 + (index % 4) * 0.35,
+}));
 
-  for (let i = 0; i < spokes; i++) {
-    const angle = rotation + (i / spokes) * Math.PI * 2;
-    const wobble = Math.sin(time * 0.8 + i * 0.5 + phase) * maxR * 0.015;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(
-      cx + Math.cos(angle) * (maxR + wobble) * pulse,
-      cy + Math.sin(angle) * (maxR + wobble) * pulse
-    );
-    ctx.stroke();
-  }
-
-  ctx.strokeStyle = 'rgba(155, 143, 217, 0.11)';
-  ctx.lineWidth = 0.65;
-
-  for (let ring = 1; ring <= rings; ring++) {
-    const t = ring / rings;
-    const baseR = maxR * t * pulse;
-    ctx.beginPath();
-
-    for (let i = 0; i <= spokes; i++) {
-      const angle = rotation + (i / spokes) * Math.PI * 2;
-      const sag = Math.sin(i * 1.7 + ring * 0.9 + time * 1.1 + phase) * maxR * 0.028 * t;
-      const r = baseR + sag;
-      const x = cx + Math.cos(angle) * r;
-      const y = cy + Math.sin(angle) * r;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-
-    ctx.closePath();
-    ctx.stroke();
-  }
-
-  ctx.fillStyle = 'rgba(107, 127, 215, 0.18)';
-  ctx.beginPath();
-  ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
-  ctx.fill();
+function flowAngle(x, y, time, reducedMotion) {
+  const t = reducedMotion ? 0 : time;
+  return (
+    Math.sin(x * 2.4 + t * 0.55) * 1.2 +
+    Math.cos(y * 2.1 - t * 0.45) * 1.1 +
+    Math.sin((x + y) * 1.6 + t * 0.35) * 0.8
+  );
 }
 
-export default function WebTextureCanvas() {
+function drawStreamlines(ctx, width, height, time, reducedMotion) {
+  const step = 7;
+  const maxSteps = Math.floor((Math.min(width, height) * 0.55) / step);
+
+  for (const seed of streamSeeds) {
+    let x = seed.x * width;
+    let y = seed.y * height;
+    const path = [{ x, y }];
+
+    for (let i = 0; i < maxSteps * seed.length; i++) {
+      const nx = x / width;
+      const ny = y / height;
+      const angle = flowAngle(nx * Math.PI * 2, ny * Math.PI * 2, time + seed.phase, reducedMotion);
+      const curl = seed.curl * (reducedMotion ? 0 : 1);
+
+      x += Math.cos(angle) * step * curl;
+      y += Math.sin(angle) * step * curl;
+
+      if (x < -20 || x > width + 20 || y < -20 || y > height + 20) break;
+      path.push({ x, y });
+    }
+
+    if (path.length < 4) continue;
+
+    const alpha = 0.06 + (seed.phase % 1) * 0.05;
+    ctx.strokeStyle = `rgba(107, 127, 215, ${alpha})`;
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    path.forEach((point, index) => {
+      if (index === 0) ctx.moveTo(point.x, point.y);
+      else ctx.lineTo(point.x, point.y);
+    });
+    ctx.stroke();
+
+    const head = path[path.length - 1];
+    const tail = path[Math.max(0, path.length - 6)];
+    const dx = head.x - tail.x;
+    const dy = head.y - tail.y;
+    const mag = Math.hypot(dx, dy) || 1;
+    const pulse = reducedMotion ? 0.5 : 0.35 + Math.sin(time * 1.6 + seed.phase) * 0.25;
+
+    ctx.fillStyle = `rgba(155, 143, 217, ${0.2 * pulse})`;
+    ctx.beginPath();
+    ctx.arc(head.x, head.y, 1.6 * pulse, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawNodes(ctx, width, height, time, reducedMotion) {
+  const positions = [];
+
+  for (const node of nodeSeeds) {
+    const drift = reducedMotion ? 0 : 1;
+    const x =
+      node.x * width +
+      Math.sin(time * 0.5 + node.phase) * 22 * drift;
+    const y =
+      node.y * height +
+      Math.cos(time * 0.42 + node.phase * 1.1) * 18 * drift;
+    const pulse = reducedMotion
+      ? 0.55
+      : 0.4 + Math.sin(time * 1.2 + node.phase) * 0.3;
+
+    positions.push({ x, y, pulse });
+
+    ctx.fillStyle = `rgba(107, 127, 215, ${0.18 * pulse})`;
+    ctx.beginPath();
+    ctx.arc(x, y, node.size * pulse, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = `rgba(199, 125, 160, ${0.12 * pulse})`;
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.arc(x, y, node.size * pulse * 2.8, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  if (reducedMotion) return;
+
+  ctx.lineWidth = 0.45;
+  for (let i = 0; i < positions.length; i++) {
+    for (let j = i + 1; j < positions.length; j++) {
+      const a = positions[i];
+      const b = positions[j];
+      const dist = Math.hypot(a.x - b.x, a.y - b.y);
+      if (dist > 160) continue;
+
+      const alpha = (1 - dist / 160) * 0.1;
+      ctx.strokeStyle = `rgba(155, 143, 217, ${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+  }
+}
+
+function drawRipples(ctx, width, height, time, reducedMotion) {
+  const centers = [
+    { x: 0.22, y: 0.28, phase: 0 },
+    { x: 0.78, y: 0.34, phase: 1.4 },
+    { x: 0.54, y: 0.72, phase: 2.8 },
+  ];
+
+  for (const center of centers) {
+    const cx = center.x * width;
+    const cy = center.y * height;
+    const rings = 4;
+
+    for (let ring = 0; ring < rings; ring++) {
+      const progress = reducedMotion
+        ? ring / rings
+        : (ring / rings + (time * 0.08 + center.phase) % 1) % 1;
+      const radius = progress * Math.min(width, height) * 0.22;
+      const alpha = (1 - progress) * 0.09;
+
+      ctx.strokeStyle = `rgba(107, 127, 215, ${alpha})`;
+      ctx.lineWidth = 0.75;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+}
+
+export function TextureCanvas() {
   const canvasRef = useRef(null);
   const rafRef = useRef(0);
 
@@ -70,8 +167,8 @@ export default function WebTextureCanvas() {
     let reducedMotion = motionQuery.matches;
     let hidden = document.hidden;
 
-    const onMotionChange = (e) => {
-      reducedMotion = e.matches;
+    const onMotionChange = (event) => {
+      reducedMotion = event.matches;
     };
     const onVisibility = () => {
       hidden = document.hidden;
@@ -87,7 +184,7 @@ export default function WebTextureCanvas() {
     const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
-      const scale = 0.6;
+      const scale = 0.65;
       canvas.width = Math.max(1, Math.floor(width * scale));
       canvas.height = Math.max(1, Math.floor(height * scale));
       canvas.style.width = `${width}px`;
@@ -99,24 +196,14 @@ export default function WebTextureCanvas() {
       const ch = canvas.height;
       const sx = cw / width;
       const sy = ch / height;
-      const base = Math.min(width, height);
 
       ctx.clearRect(0, 0, cw, ch);
       ctx.save();
       ctx.scale(sx, sy);
 
-      const breathe = 0.98 + Math.sin(time * 0.5) * 0.02;
-
-      for (const web of WEBS) {
-        const cx = web.x * width;
-        const cy = web.y * height;
-        const maxR = web.radius * base * breathe;
-        const rotation = reducedMotion
-          ? web.phase * 0.3
-          : time * web.rotSpeed + web.phase;
-
-        drawSpiderWeb(ctx, cx, cy, maxR, web.spokes, web.rings, rotation, time, web.phase);
-      }
+      drawRipples(ctx, width, height, time, reducedMotion);
+      drawStreamlines(ctx, width, height, time, reducedMotion);
+      drawNodes(ctx, width, height, time, reducedMotion);
 
       ctx.restore();
     };
@@ -124,7 +211,7 @@ export default function WebTextureCanvas() {
     const tick = () => {
       if (!hidden) {
         draw();
-        if (!reducedMotion) time += 0.012;
+        if (!reducedMotion) time += 0.011;
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -141,5 +228,7 @@ export default function WebTextureCanvas() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="neu-web-texture neu-spider-web" aria-hidden="true" />;
+  return <canvas ref={canvasRef} className="neu-texture-canvas" aria-hidden="true" />;
 }
+
+export default TextureCanvas;

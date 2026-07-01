@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { RemoteBoundary } from './RemoteBoundary';
-import WebTextureCanvas from './WebTextureCanvas';
+import { ShellBackground } from './ShellBackground';
 
 const HeaderApp = lazy(() => import('header/App'));
 const AboutApp = lazy(() => import('about/App'));
@@ -11,13 +11,7 @@ const ContactApp = lazy(() => import('contact/App'));
 export default function App() {
   return (
     <div className="neu-shell">
-      <div className="neu-bg" aria-hidden="true">
-        <WebTextureCanvas />
-        <span className="neu-blob neu-blob-1" />
-        <span className="neu-blob neu-blob-2" />
-        <span className="neu-blob neu-blob-3" />
-        <span className="neu-blob neu-blob-4" />
-      </div>
+      <ShellBackground />
       <div className="header-slot">
         <RemoteBoundary label="Header">
           <HeaderApp />

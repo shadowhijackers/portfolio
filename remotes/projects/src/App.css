@@ -1,5 +1,32 @@
 .projects-mfe {
+  position: relative;
   padding: 2.5rem 0;
+}
+
+.projects-mfe::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  right: -2%;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(199, 125, 160, 0.09);
+  filter: blur(65px);
+  pointer-events: none;
+  animation: projects-glow 10s ease-in-out infinite;
+}
+
+@keyframes projects-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1) translate(-10px, 8px);
+  }
 }
 
 .section-head {
@@ -12,6 +39,8 @@
 }
 
 .project-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
@@ -25,7 +54,42 @@
   background: var(--bg, #e8edf4);
   box-shadow: var(--neu-raised, 9px 9px 18px #c5d0e0, -9px -9px 18px #fff);
   overflow: hidden;
-  transition: box-shadow 0.3s, transform 0.3s;
+  transition: box-shadow 0.35s, transform 0.35s;
+}
+
+.project-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.65s ease;
+  pointer-events: none;
+}
+
+.project-card:hover::after {
+  transform: translateX(130%);
+}
+
+.project-card.featured {
+  animation: featured-glow 4s ease-in-out infinite;
+}
+
+@keyframes featured-glow {
+  0%,
+  100% {
+    box-shadow: var(--neu-raised, 9px 9px 18px #c5d0e0, -9px -9px 18px #fff);
+  }
+  50% {
+    box-shadow:
+      var(--neu-raised-lg, 12px 12px 24px #c5d0e0, -12px -12px 24px #fff),
+      0 0 0 1px color-mix(in srgb, var(--accent, #6b7fd7) 15%, transparent);
+  }
 }
 
 .project-card:hover {
@@ -159,5 +223,16 @@
 @media (max-width: 768px) {
   .project-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-mfe::before,
+  .project-card.featured {
+    animation: none;
+  }
+
+  .project-card::after {
+    display: none;
   }
 }
