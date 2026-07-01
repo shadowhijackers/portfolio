@@ -9,9 +9,9 @@ export const aboutContent = {
   portraitAlt: 'Portrait of Nagaraj Ravi, frontend engineer',
 
   eyebrow: 'Frontend Lead · Available for work',
-  headline: 'Building thoughtful',
-  headlineAccent: 'crafted',
-  headlineLine2: 'web experiences',
+  headline: 'Hi, I\'m Nagaraj Ravi',
+  headlineAccent: '',
+  headlineLine2: '',
   lead:
     'Frontend Lead with 9+ years of experience designing and developing high-performance React.js and Angular applications.  Experienced in Micro Frontend architecture, Clean Architechture, State Management reusable component libraries, performance optimization, accessibility, and enterprise application development.',
   leadSecondary:

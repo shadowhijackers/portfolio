@@ -2,6 +2,13 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { federation } from '@module-federation/vite';
 
+const staticOrigin = process.env.AZURE_STATIC_URL?.replace(/\/$/, '');
+
+const remoteEntry = (name, devPort) =>
+  staticOrigin
+    ? `${staticOrigin}/${name}/remoteEntry.js`
+    : `http://localhost:${devPort}/remoteEntry.js`;
+
 export default defineConfig({
   plugins: [
     react(),
@@ -12,35 +19,35 @@ export default defineConfig({
         header: {
           type: 'module',
           name: 'header',
-          entry: 'http://localhost:5001/remoteEntry.js',
+          entry: remoteEntry('header', 5001),
           entryGlobalName: 'header',
           shareScope: 'default',
         },
         about: {
           type: 'module',
           name: 'about',
-          entry: 'http://localhost:5002/remoteEntry.js',
+          entry: remoteEntry('about', 5002),
           entryGlobalName: 'about',
           shareScope: 'default',
         },
         experience: {
           type: 'module',
           name: 'experience',
-          entry: 'http://localhost:5005/remoteEntry.js',
+          entry: remoteEntry('experience', 5005),
           entryGlobalName: 'experience',
           shareScope: 'default',
         },
         projects: {
           type: 'module',
           name: 'projects',
-          entry: 'http://localhost:5003/remoteEntry.js',
+          entry: remoteEntry('projects', 5003),
           entryGlobalName: 'projects',
           shareScope: 'default',
         },
         contact: {
           type: 'module',
           name: 'contact',
-          entry: 'http://localhost:5004/remoteEntry.js',
+          entry: remoteEntry('contact', 5004),
           entryGlobalName: 'contact',
           shareScope: 'default',
         },
