@@ -48,7 +48,7 @@ Open **http://localhost:5173**. All six apps must be running (the root `dev` scr
 1. **Name & branding** — Edit `remotes/header/src/App.jsx` and `remotes/about/src/App.jsx`.
 2. **Projects** — Update the `PROJECTS` array in `remotes/projects/src/App.jsx`.
 3. **Contact & links** — Edit `remotes/contact/src/App.jsx` (`LINKS`, footer text).
-4. **Résumé** — Place `resume.pdf` in `shell/public/` (create the folder if needed).
+4. **Résumé** — Keep `resume.pdf` in `remotes/about/src/assets/` and copy it to `shell/public/resume.pdf` for download.
 
 ## Run a single micro frontend
 

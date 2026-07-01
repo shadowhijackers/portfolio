@@ -35,9 +35,29 @@
   --glow-magenta: var(--neu-raised-sm);
   --plasma-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
 
-  --font-sans: 'Nunito', system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-display: 'DM Sans', system-ui, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', monospace;
+
+  --text-display: clamp(2.125rem, 5.5vw, 3.25rem);
+  --text-h2: clamp(1.4rem, 2.8vw, 1.875rem);
+  --text-h3: 1.0625rem;
+  --text-body: 1.0625rem;
+  --text-body-sm: 0.9375rem;
+  --text-caption: 0.8125rem;
+  --text-overline: 0.6875rem;
+
+  --leading-display: 1.08;
+  --leading-heading: 1.22;
+  --leading-body: 1.72;
+  --leading-caption: 1.5;
+
+  --tracking-tight: -0.035em;
+  --tracking-heading: -0.02em;
+  --tracking-body: -0.01em;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.14em;
+
   --radius: 20px;
   --radius-sm: 14px;
   --header-height: 4.75rem;
@@ -50,10 +70,16 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: 400;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.65;
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-body);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
 }
 
 #root {
@@ -239,11 +265,29 @@ main {
 
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-size: var(--text-h2);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
   margin: 0 0 0.5rem;
   color: var(--text);
+}
+
+.section-head h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 700;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+  margin: 0 0 0.65rem;
+  color: var(--text);
+}
+
+.section-head p {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+  color: var(--muted);
 }
 
 .mfe-error {
@@ -311,9 +355,10 @@ main {
 
 .section-tag {
   display: inline-block;
-  font-size: 0.72rem;
+  font-family: var(--font-display);
+  font-size: var(--text-overline);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 0.65rem;

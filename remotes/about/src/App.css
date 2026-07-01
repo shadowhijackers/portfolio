@@ -262,11 +262,12 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.78rem;
+  font-family: var(--font-display, 'DM Sans', sans-serif);
+  font-size: var(--text-overline, 0.6875rem);
   font-weight: 700;
   color: var(--accent, #6b7fd7);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--tracking-wider, 0.14em);
   margin: 0 0 1.25rem;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
@@ -284,32 +285,43 @@
 
 .about-mfe h1 {
   font-family: var(--font-display, 'DM Sans', sans-serif);
-  font-size: clamp(2rem, 5.5vw, 3.25rem);
-  line-height: 1.15;
+  font-size: var(--text-display, clamp(2.125rem, 5.5vw, 3.25rem));
+  line-height: var(--leading-display, 1.08);
   font-weight: 700;
   margin: 0 0 1.25rem;
-  letter-spacing: -0.03em;
-  color: var(--text, #4a5568);
+  letter-spacing: var(--tracking-tight, -0.035em);
+  background: linear-gradient(
+    135deg,
+    var(--accent, #6b7fd7) 0%,
+    var(--accent-2, #9b8fd9) 50%,
+    var(--plasma-pink, #d4a5c4) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .gradient {
-  color: var(--accent, #6b7fd7);
+  background: linear-gradient(135deg, #7b8ee8 0%, #6b7fd7 50%, #c77da0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .lead {
-  font-size: 1.05rem;
+  font-size: var(--text-body, 1.0625rem);
   color: var(--muted, #7b8798);
   max-width: 54ch;
   margin: 0 0 1rem;
-  line-height: 1.7;
+  line-height: var(--leading-body, 1.72);
 }
 
 .lead-secondary {
-  font-size: 1rem;
+  font-size: var(--text-body-sm, 0.9375rem);
   color: var(--muted, #7b8798);
   max-width: 50ch;
   margin: 0 0 2rem;
-  line-height: 1.65;
+  line-height: var(--leading-body, 1.72);
 }
 
 .about-actions {
@@ -324,8 +336,9 @@
   padding: 0.85rem 1.6rem;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: var(--text-body-sm, 0.9375rem);
   font-family: var(--font-display, 'DM Sans', sans-serif);
+  letter-spacing: var(--tracking-body, -0.01em);
   text-decoration: none;
   border: none;
   background: var(--bg, #e8edf4);
@@ -395,7 +408,8 @@
 .stat-label {
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.8rem;
+  font-size: var(--text-caption, 0.8125rem);
+  line-height: var(--leading-caption, 1.5);
   color: var(--muted, #7b8798);
 }
 
@@ -444,17 +458,19 @@
 
 .highlight-card h3 {
   font-family: var(--font-display, 'DM Sans', sans-serif);
-  font-size: 1rem;
+  font-size: var(--text-h3, 1.0625rem);
   font-weight: 700;
+  line-height: var(--leading-heading, 1.22);
+  letter-spacing: var(--tracking-heading, -0.02em);
   margin: 0.5rem 0 0.5rem;
   color: var(--text, #4a5568);
 }
 
 .highlight-card p {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: var(--text-body-sm, 0.9375rem);
   color: var(--muted, #7b8798);
-  line-height: 1.55;
+  line-height: var(--leading-body, 1.72);
 }
 
 .skills-block {

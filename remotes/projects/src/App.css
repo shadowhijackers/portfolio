@@ -11,21 +11,6 @@
   box-shadow: var(--neu-raised-sm, 5px 5px 10px #c5d0e0, -5px -5px 10px #fff);
 }
 
-.section-head h2 {
-  font-family: var(--font-display, 'DM Sans', sans-serif);
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.65rem;
-  color: var(--text, #4a5568);
-}
-
-.section-head p {
-  margin: 0;
-  color: var(--muted, #7b8798);
-  line-height: 1.65;
-}
-
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -113,24 +98,26 @@
 
 .project-card h3 {
   font-family: var(--font-display, 'DM Sans', sans-serif);
-  font-size: 1.05rem;
+  font-size: var(--text-h3, 1.0625rem);
   font-weight: 700;
+  line-height: var(--leading-heading, 1.22);
+  letter-spacing: var(--tracking-heading, -0.02em);
   margin: 0 0 0.35rem;
   color: var(--text, #4a5568);
 }
 
 .metric {
-  font-size: 0.75rem;
+  font-size: var(--text-caption, 0.8125rem);
   font-weight: 600;
   color: var(--accent, #6b7fd7);
   margin: 0 0 0.5rem;
 }
 
 .desc {
-  font-size: 0.88rem;
+  font-size: var(--text-body-sm, 0.9375rem);
   color: var(--muted, #7b8798);
   margin: 0 0 1rem;
-  line-height: 1.55;
+  line-height: var(--leading-body, 1.72);
 }
 
 .tags {

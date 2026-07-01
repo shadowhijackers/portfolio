@@ -101,8 +101,7 @@ export function HeaderApp() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
-          <span className="logo-mark">NR</span>
-          <span className="logo-text">Nagaraj Ravi</span>
+          <span className="logo-text">NAGARAJRAVI.DEV</span>
         </a>
 
         {!isMobile && (

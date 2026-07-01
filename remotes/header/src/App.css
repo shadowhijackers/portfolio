@@ -34,30 +34,18 @@
 .header-mfe .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   text-decoration: none;
-  color: inherit;
-  font-weight: 700;
-  font-family: var(--font-display, 'DM Sans', sans-serif);
   flex-shrink: 0;
 }
 
-.header-mfe .logo-mark {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 14px;
-  background: var(--bg, #e8edf4);
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--accent, #6b7fd7);
-  box-shadow: var(--neu-raised-sm, 5px 5px 10px #c5d0e0, -5px -5px 10px #fff);
-}
-
 .header-mfe .logo-text {
-  font-size: 1rem;
-  color: var(--text, #4a5568);
+  font-family: var(--font-display, 'DM Sans', sans-serif);
+  font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #3d4a7a;
 }
 
 .header-mfe nav ul {
@@ -84,8 +72,10 @@
   border-radius: 999px;
   color: var(--muted, #7b8798);
   text-decoration: none;
-  font-size: 0.875rem;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: var(--text-body-sm, 0.9375rem);
   font-weight: 600;
+  letter-spacing: var(--tracking-body, -0.01em);
   white-space: nowrap;
 }
 
@@ -124,7 +114,7 @@
 /* ── Mobile layout (driven by .is-mobile class from JS) ── */
 
 .header-mfe.is-mobile .logo-text {
-  display: none;
+  font-size: 1rem;
 }
 
 .header-mfe.is-mobile .header-inner {

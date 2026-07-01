@@ -8,8 +8,8 @@ export const projectsContent = {
     {
       title: 'Urban Planning & Development Authority',
       description:
-        'Government digital services portal for urban planning and development in Bahrain. Led UI development, team management, and AWS cloud integration with GraphQL APIs and Camunda BPM workflows.',
-      tags: ['React', 'Node.js', 'PostgreSQL', 'GraphQL', 'AWS Network, Microservices and DevOps stacks', 'Camunda BPM'],
+        'Flagship government digital services portal for urban planning and development in Bahrain. Led UI architecture, team delivery, and AWS cloud integration with GraphQL APIs and Camunda BPM workflows for citizen-facing services.',
+      tags: ['React', 'Node.js', 'PostgreSQL', 'GraphQL', 'AWS', 'Microservices', 'DevOps', 'Camunda BPM'],
       year: '2024',
       featured: false,
       link: 'https://services.planning.bh/',
@@ -20,8 +20,8 @@ export const projectsContent = {
     {
       title: 'Motionworks',
       description:
-        'Population intelligence and OOH measurement platform with Viewcast, Placecast, and Popcast products. API-first measurement infrastructure with provenance-backed analytics across 210 DMAs.',
-      tags: ['Angular', 'Node.js', 'GraphQL', 'REST APIs', 'Jenkins', 'JIRA', 'Github'],
+        'Population intelligence and OOH measurement platform powering Viewcast, Placecast, and Popcast. Built API-first measurement infrastructure with provenance-backed analytics across 210 DMAs.',
+      tags: ['Angular', 'Node.js', 'GraphQL', 'REST APIs', 'Jenkins', 'JIRA', 'GitHub'],
       year: '2022',
       featured: false,
       link: 'https://www.mworks.com/',
@@ -32,8 +32,8 @@ export const projectsContent = {
     {
       title: 'LINGA POS',
       description:
-        'All-in-one restaurant and retail POS suite with back office, mobile ordering, and hybrid sync. Designed RESTful APIs for transaction processing, data synchronization, and POS calculations.',
-      tags: ['Go', 'Angular', 'MongoDB', 'Redis', 'Jenkins', 'JIRA', 'Github', 'Ionic'],
+        'All-in-one restaurant and retail POS suite spanning back office, mobile ordering, and hybrid sync. Designed resilient RESTful APIs for transaction processing, data synchronization, and POS calculations.',
+      tags: ['Go', 'Angular', 'MongoDB', 'Redis', 'Jenkins', 'JIRA', 'GitHub', 'Ionic'],
       year: '2018',
       featured: false,
       link: 'https://www.lingapos.com/',

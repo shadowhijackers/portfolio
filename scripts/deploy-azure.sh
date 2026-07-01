@@ -187,6 +187,8 @@ main() {
   fi
 
   if [[ "${SKIP_BUILD}" == false ]]; then
+    log "Syncing resume.pdf to shell/public"
+    cp "${ROOT_DIR}/remotes/about/src/assets/resume.pdf" "${ROOT_DIR}/shell/public/resume.pdf"
     build_remotes
     build_shell
   fi

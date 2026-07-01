@@ -24,7 +24,35 @@ export default function App() {
     secondarySkills,
     exploringTitle,
     exploringSkills,
+    resumeUrl,
+    resumeFileName,
   } = aboutContent;
+
+  async function handleResumeDownload(event) {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(resumeUrl);
+      if (!response.ok) throw new Error('Resume download failed');
+
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = resumeFileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(objectUrl);
+    } catch {
+      const link = document.createElement('a');
+      link.href = resumeUrl;
+      link.download = resumeFileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  }
 
   return (
     <section
@@ -58,10 +86,10 @@ export default function App() {
                 View projects
               </a>
               <a
-                href="/resume.pdf"
+                href={resumeUrl}
                 className="btn ghost"
-                onClick={(e) => e.preventDefault()}
-                title="Add resume.pdf to shell/public"
+                download={resumeFileName}
+                onClick={handleResumeDownload}
               >
                 Download résumé
               </a>
@@ -70,7 +98,6 @@ export default function App() {
 
           <div className="hero-visual anim-item" style={{ '--i': 2 }}>
             <div className="hero-image-frame">
-              <span className="hero-image-ring" aria-hidden="true" />
               <img
                 src={portrait}
                 alt={portraitAlt}

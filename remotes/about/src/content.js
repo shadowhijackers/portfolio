@@ -7,15 +7,17 @@ const devicon = (path) =>
 export const aboutContent = {
   portrait: portraitImg,
   portraitAlt: 'Portrait of Nagaraj Ravi, frontend engineer',
+  resumeUrl: '/resume.pdf',
+  resumeFileName: 'Nagaraj-Ravi-Resume.pdf',
 
   eyebrow: 'Frontend Lead · Available for work',
   headline: 'Hi, I\'m Nagaraj Ravi',
   headlineAccent: '',
   headlineLine2: '',
   lead:
-    'Frontend Lead with 9+ years of experience designing and developing high-performance React.js and Angular applications.  Experienced in Micro Frontend architecture, Clean Architechture, State Management reusable component libraries, performance optimization, accessibility, and enterprise application development.',
+    'Frontend Lead with 9+ years of experience designing and building high-performance React and Angular applications. Specialized in micro-frontend architecture, clean architecture, state management, reusable component libraries, performance optimization, accessibility, and enterprise-grade delivery.',
   leadSecondary:
-    'Previously led UI for dashboards, design systems, government applications. I care about motion, typography, and details that make products feel premium.',
+    'I have led UI for dashboards, design systems, and government platforms—with a focus on motion, typography, and craft that makes digital products feel premium.',
 
   badges: ['React', 'Angular', 'MFE'],
 
@@ -28,15 +30,15 @@ export const aboutContent = {
   highlights: [
     {
       title: 'Design systems',
-      text: 'Token-driven components, accessibility audits, and Storybook docs used across squads.',
+      text: 'Token-driven components, accessibility audits, and Storybook documentation adopted across engineering squads.',
     },
     {
       title: 'Micro frontends',
-      text: 'Module Federation hosts and remotes with shared runtime, independent deploy pipelines.',
+      text: 'Module Federation hosts and remotes with shared runtime boundaries and independent deployment pipelines.',
     },
     {
       title: 'Performance',
-      text: 'Core Web Vitals tuning, bundle splitting, and lazy hydration for large React apps.',
+      text: 'Core Web Vitals optimization, bundle splitting, and lazy hydration strategies for large-scale React apps.',
     },
   ],
 
