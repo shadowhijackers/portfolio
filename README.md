@@ -41,6 +41,7 @@ Open **http://localhost:5173**. All six apps must be running (the root `dev` scr
 | `npm run dev` | Start shell + all remotes in dev mode |
 | `npm run build` | Production build (remotes first, then shell) |
 | `npm run preview` | Preview the built shell |
+| `npm run deploy:azure` | Build and deploy to Azure Storage |
 
 ## Customize your portfolio
 
@@ -64,6 +65,42 @@ npm run dev -w @portfolio/about
 - [@module-federation/vite](https://www.npmjs.com/package/@module-federation/vite)
 - npm workspaces
 
-## Production notes
+## Production & deployment
 
-After `npm run build`, deploy each `dist` folder. Update remote URLs in `shell/vite.config.js` to your CDN origins before building the shell.
+Deploy to Azure Storage static website hosting:
+
+```bash
+npm run deploy:azure
+```
+
+| Setting | Value |
+|---------|-------|
+| Storage account | `portfolio27964` |
+| Public domain | `https://www.nagarajravi.dev` |
+| Cloudflare DNS target | `portfolio27964.z1.web.core.windows.net` |
+
+The deploy script builds remotes under path prefixes (`/header/`, `/about/`, etc.) and uploads them to the `$web` container. The shell is built with `CUSTOM_DOMAIN` so Module Federation remote URLs use your public domain.
+
+### Cloudflare DNS (nagarajravi.dev)
+
+Add these records in Cloudflare → **DNS**:
+
+| Type | Name | Content | Proxy |
+|------|------|---------|-------|
+| CNAME | `www` | `portfolio27964.z1.web.core.windows.net` | Proxied |
+| CNAME | `@` | `portfolio27964.z1.web.core.windows.net` | Proxied |
+
+Set **SSL/TLS** mode to **Full**.
+
+Override the domain at deploy time:
+
+```bash
+CUSTOM_DOMAIN=https://nagarajravi.dev npm run deploy:azure
+```
+
+Faster re-deploy options:
+
+```bash
+npm run deploy:azure -- --skip-install
+npm run deploy:azure -- --skip-build
+```

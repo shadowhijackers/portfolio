@@ -3,6 +3,7 @@ set -euo pipefail
 
 STORAGE_ACCOUNT="${STORAGE_ACCOUNT:-portfolio27964}"
 RESOURCE_GROUP="${RESOURCE_GROUP:-}"
+CUSTOM_DOMAIN="${CUSTOM_DOMAIN:-https://nagarajravi.dev}"
 INDEX_DOCUMENT="${INDEX_DOCUMENT:-index.html}"
 ERROR_DOCUMENT="${ERROR_DOCUMENT:-index.html}"
 AUTH_MODE="${AUTH_MODE:-key}"
@@ -30,6 +31,8 @@ Environment variables:
   INDEX_DOCUMENT   Static website index document (default: index.html)
   ERROR_DOCUMENT   Static website 404 document (default: index.html)
   AUTH_MODE        Azure auth mode: key or login (default: key)
+  CUSTOM_DOMAIN    Public site URL for Module Federation builds
+                   (default: https://nagarajravi.dev)
 EOF
 }
 
@@ -96,7 +99,17 @@ resolve_static_url() {
   [[ -n "${endpoint}" && "${endpoint}" != "null" ]] ||
     fail "Could not resolve static website endpoint for '${STORAGE_ACCOUNT}'."
 
-  AZURE_STATIC_URL="${endpoint%/}"
+  STORAGE_ORIGIN="${endpoint%/}"
+}
+
+resolve_public_url() {
+  local domain="${CUSTOM_DOMAIN%/}"
+
+  if [[ "${domain}" != http* ]]; then
+    domain="https://${domain}"
+  fi
+
+  PUBLIC_SITE_URL="${domain}"
 }
 
 build_remotes() {
@@ -110,8 +123,8 @@ build_remotes() {
 }
 
 build_shell() {
-  log "Building shell with AZURE_STATIC_URL=${AZURE_STATIC_URL}"
-  AZURE_STATIC_URL="${AZURE_STATIC_URL}" npm run build -w shell
+  log "Building shell with AZURE_STATIC_URL=${PUBLIC_SITE_URL}"
+  AZURE_STATIC_URL="${PUBLIC_SITE_URL}" npm run build -w shell
 }
 
 validate_dist() {
@@ -162,7 +175,9 @@ main() {
     --only-show-errors
 
   resolve_static_url
-  log "Static website URL: ${AZURE_STATIC_URL}"
+  resolve_public_url
+  log "Storage origin: ${STORAGE_ORIGIN}"
+  log "Public site URL: ${PUBLIC_SITE_URL}"
 
   cd "${ROOT_DIR}"
 
@@ -184,7 +199,8 @@ main() {
   upload_dist "${ROOT_DIR}/remotes/contact/dist" "contact"
 
   log "Deployment complete"
-  printf '\nSite URL: %s\n' "${AZURE_STATIC_URL}"
+  printf '\nPublic site URL: %s\n' "${PUBLIC_SITE_URL}"
+  printf 'Storage origin (Cloudflare CNAME target): %s\n' "${STORAGE_ORIGIN#https://}"
 }
 
 main "$@"
